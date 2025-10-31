@@ -23,7 +23,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://github.com/yourusername" 
+                href="https://github.com/Niliya-Shree" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="social-icon w-10 h-10 rounded-full bg-gray-800 hover:bg-primary-600 flex items-center justify-center transition-colors"
@@ -32,7 +32,7 @@ const Footer = () => {
                 <FiGithub className="w-5 h-5" />
               </a>
               <a 
-                href="https://linkedin.com/in/yourusername" 
+                href="https://www.linkedin.com/in/niliya-shree-6a8b16229/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="social-icon w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
@@ -41,7 +41,7 @@ const Footer = () => {
                 <FiLinkedin className="w-5 h-5" />
               </a>
               <a 
-                href="mailto:niliyashree@example.com" 
+                href="mailto:niliya1603@gmail.com" 
                 className="social-icon w-10 h-10 rounded-full bg-gray-800 hover:bg-red-500 flex items-center justify-center transition-colors"
                 aria-label="Email"
               >
@@ -98,7 +98,7 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <a href="mailto:niliyashree@example.com" className="hover:text-white transition-colors">
-                  niliyashree@example.com
+                  niliya1603@gmail.com
                 </a>
               </li>
               <li className="flex items-start">

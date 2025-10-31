@@ -4,6 +4,8 @@ import { FiGithub, FiExternalLink, FiCode } from 'react-icons/fi';
 import { FaReact, FaNodeJs, FaAws } from 'react-icons/fa';
 import { SiMongodb, SiFirebase, SiNextdotjs, SiTailwindcss } from 'react-icons/si';
 
+import type { ReactElement } from 'react';
+
 type Project = {
   id: number;
   title: string;
@@ -12,7 +14,7 @@ type Project = {
   image: string;
   github: string;
   demo: string;
-  icon: JSX.Element;
+  icon: ReactElement;
 };
 
 const Projects = () => {
@@ -119,7 +121,7 @@ const Projects = () => {
           className="text-center mb-12"
         >
           <h2 className="section-title">My Projects</h2>
-          <div className="w-24 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div>
+          {/* <div className="w-24 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div> */}
         </motion.div>
 
         {/* Project Filters */}

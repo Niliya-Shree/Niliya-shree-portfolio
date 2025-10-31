@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { FiAward, FiCode, FiGlobe } from 'react-icons/fi';
 import { FaReact, FaNodeJs, FaAws, FaDatabase } from 'react-icons/fa';
 import { SiTypescript, SiTailwindcss, SiFirebase } from 'react-icons/si';
+import image from '../../assets/images/image.jpg';
 
 const About = () => {
   const skills = [
@@ -26,7 +27,7 @@ const About = () => {
           className="text-center mb-16"
         >
           <h2 className="section-title">About Me</h2>
-          <div className="w-24 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div>
+          {/* <div className="w-24 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div> */}
         </motion.div>
 
         <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -42,7 +43,8 @@ const About = () => {
               <div className="absolute inset-2 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
                 {/* Replace with actual profile image */}
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
-                  <span className="text-4xl">👩‍💻</span>
+                  {/* <span className="text-4xl">👩‍💻</span> */}
+                  <img src={image} alt="" />
                 </div>
               </div>
             </div>

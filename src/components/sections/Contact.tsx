@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiMail, FiMapPin, FiLinkedin, FiGithub, FiTwitter } from 'react-icons/fi';
+import { FiMail, FiMapPin, FiLinkedin, FiGithub, FiLoader, FiCheck, FiX } from 'react-icons/fi';
+import emailjs from '@emailjs/browser';
+
+// Initialize EmailJS with your public key
+emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '');
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +12,8 @@ const Contact = () => {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<null | 'success' | 'error'>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -15,16 +21,63 @@ const Contact = () => {
       ...prev,
       [name]: value
     }));
+    // Reset status when user makes changes
+    if (submitStatus) setSubmitStatus(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // For now, just log the form data to the console
-    console.log('Form submitted:', formData);
-    // Show success message
-    alert('Thank you for your message! I will get back to you soon.');
-    // Reset form
-    setFormData({ name: '', email: '', message: '' });
+    
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    try {
+      if (!import.meta.env.VITE_EMAILJS_SERVICE_ID || !import.meta.env.VITE_EMAILJS_TEMPLATE_ID) {
+        throw new Error('EmailJS environment variables are not properly configured');
+      }
+      
+      const response = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        }
+      );
+      
+      console.log('Email sent successfully:', response);
+      
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      setSubmitStatus('error');
+      
+      // Log detailed error information
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          message: error.message,
+          name: error.name,
+          stack: error.stack
+        });
+      }
+      
+      // Reset error message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -38,7 +91,7 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="section-title">Get In Touch</h2>
-          <div className="w-24 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div>
+          {/* <div className="w-24 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div> */}
           <p className="text-gray-600 mt-6 max-w-2xl mx-auto">
             Have a project in mind or want to discuss potential opportunities? Feel free to reach out to me. I'll get back to you as soon as possible!
           </p>
@@ -63,7 +116,7 @@ const Contact = () => {
                   href="mailto:niliyashree@example.com" 
                   className="text-gray-600 hover:text-primary-600 transition-colors"
                 >
-                  niliyashree@example.com
+                  niliya1603@gmail.com
                 </a>
               </div>
             </div>
@@ -82,7 +135,7 @@ const Contact = () => {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Connect With Me</h3>
               <div className="flex space-x-4">
                 <a 
-                  href="https://github.com/yourusername" 
+                  href="https://github.com/Niliya-Shree" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="social-icon w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center hover:shadow-md transition-all"
@@ -91,7 +144,7 @@ const Contact = () => {
                   <FiGithub className="w-5 h-5" />
                 </a>
                 <a 
-                  href="https://linkedin.com/in/yourusername" 
+                  href="https://www.linkedin.com/in/niliya-shree-6a8b16229/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="social-icon w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center hover:shadow-md transition-all"
@@ -100,13 +153,15 @@ const Contact = () => {
                   <FiLinkedin className="w-5 h-5" />
                 </a>
                 <a 
-                  href="https://twitter.com/yourusername" 
+                  href="https://medium.com/@niliya1603" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="social-icon w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center hover:shadow-md transition-all"
-                  aria-label="Twitter"
+                  aria-label="Medium"
                 >
-                  <FiTwitter className="w-5 h-5" />
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M0 0v24h24v-24h-24zm19.938 5.686l-1.5 1.45c-.2.15-.3.35-.3.6v10.3c0 .25.1.45.3.6l1.4 1.4v.3h-7v-.3l1.5-1.4c.2-.15.2-.4.2-.6v-7.5l-4.2 9.3h-.6l-5-9.3v6.2c-.1.2 0 .5.2.6l2 2.5v.3h-6v-.3l2-2.5c.2-.2.2-.5.1-.7v-7.1c0-.1 0-.2-.1-.3l-1.7-2.3v-.3h5.2l3.9 8.6 3.4-8.6h4.8z"/>
+                  </svg>
                 </a>
               </div>
             </div>
@@ -171,11 +226,29 @@ const Contact = () => {
 
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-primary-500 text-white py-3 px-6 rounded-md font-medium hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                disabled={isSubmitting}
+                whileHover={{ scale: submitStatus ? 1 : 1.02 }}
+                whileTap={{ scale: submitStatus ? 1 : 0.98 }}
+                className={`w-full py-3 px-6 rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  submitStatus === 'success'
+                    ? 'bg-green-500 text-white focus:ring-green-500 hover:bg-green-600'
+                    : submitStatus === 'error'
+                    ? 'bg-red-500 text-white focus:ring-red-500 hover:bg-red-600'
+                    : 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500'
+                } ${isSubmitting ? 'opacity-80 cursor-not-allowed' : ''}`}
               >
-                Send Message
+                <div className="flex items-center justify-center space-x-2">
+                  {isSubmitting && <FiLoader className="animate-spin" />}
+                  {submitStatus === 'success' && <FiCheck />}
+                  {submitStatus === 'error' && <FiX />}
+                  <span>
+                    {submitStatus === 'success' 
+                      ? 'Message Sent!' 
+                      : submitStatus === 'error' 
+                        ? 'Failed to Send' 
+                        : 'Send Message'}
+                  </span>
+                </div>
               </motion.button>
             </form>
           </motion.div>
